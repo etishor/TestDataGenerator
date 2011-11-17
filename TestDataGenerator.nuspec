@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>TestDataGenerator</id>
+    <version>0.0.1</version>
+    <title>TestDataGenerator</title>
+    <authors>iulian.margarintescu</authors>
+    <owners>Iulian Margarintescu</owners>
+    <projectUrl>https://github.com/etishor/TestDataGenerator</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utility for filling objects with data.
+
+Supports: Primitive Types, Arrays, IEnumerable&lt;&gt;, IList&lt;&gt;, ICollection&lt;&gt;, ISet&lt;&gt;, IDictionary&lt;&gt;, List&lt;&gt;, HashedSet&lt;&gt;, Dictionary&lt;&gt; and hopefully most of user custom classes</description>
+    <releaseNotes>first release</releaseNotes>
+    <tags>test data, fill object, generator</tags>
+  </metadata>
+  <files>
+    <file src="lib\net40\TestDataGenerator.dll" target="lib\net40\TestDataGenerator.dll" />
+  </files>
+</package>
