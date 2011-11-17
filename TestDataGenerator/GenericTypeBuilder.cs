@@ -9,10 +9,14 @@ namespace TestDataGenerator
 {
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Wrapper around TypeBuilder which uses generics.
     /// </summary>
     public class GenericTypeBuilder<T> : TypeBuilder
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericTypeBuilder&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="catalog">The global catalog used for references.</param>
         public GenericTypeBuilder(Catalog catalog)
             : base(catalog, typeof(T))
         {
