@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="CollectionTests.cs" />
     <Compile Include="CyclicObjectTests.cs" />
+    <Compile Include="InterfaceTests.cs" />
     <Compile Include="ObjectTests.cs" />
     <Compile Include="PrimitiveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

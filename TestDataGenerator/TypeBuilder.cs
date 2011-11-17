@@ -41,7 +41,7 @@
         {           
             if (this.instanceCreator == null)
             {
-                this.WithConstructorWithMostParameters();
+                this.WithConstructorWithLeastParameters();
             }
 
             if (this.instanceCreator == null)
@@ -64,7 +64,7 @@
             this.instanceCreator = () =>
             {
                 object instance = constructor();
-                if (instance == null || instance.GetType() != this.type)
+                if (instance == null || !this.type.IsAssignableFrom(instance.GetType()))
                 {
                     throw new InvalidOperationException("Invalid instance returned by calling constructor");
                 }
@@ -121,7 +121,8 @@
 
         private void SetProperties(object instance)
         {
-            var props = this.type.GetProperties().Where(p => p.CanWrite);
+            
+            var props = this.type.GetProperties().Where(p => p.CanWrite && p.GetIndexParameters().Length ==0 );
             foreach (var prop in props)
             {
                 object val = this.catalog.CreateInstance(prop.PropertyType, prop.Name);

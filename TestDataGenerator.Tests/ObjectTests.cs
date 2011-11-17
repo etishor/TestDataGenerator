@@ -11,7 +11,7 @@ namespace TestDataGenerator.Tests
 			private readonly int intValue;
 			private readonly string stringValue;
 
-			public Sample()
+			private Sample()
 			{
 				this.intValue = -1;
 				this.stringValue = null;

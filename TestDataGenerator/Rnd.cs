@@ -19,7 +19,7 @@ namespace TestDataGenerator
 
         public static int Integer()
         {
-            return rnd.Next();
+            return rnd.Next(1000);
         }
 
         public static int Integer(int max)
