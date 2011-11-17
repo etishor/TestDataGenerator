@@ -1,14 +1,8 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="RandomHelper.cs" company="Recognos Romania">
-// {RecognosCopyrightTextPlaceholder}
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace TestDataGenerator
+﻿namespace TestDataGenerator
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Helper class to generate Random Data
@@ -47,25 +41,25 @@ namespace TestDataGenerator
             return rnd.Next();
         }
 
-		public static ulong ULong()
-		{
-			return (ulong)rnd.Next();
-		}
+        public static ulong ULong()
+        {
+            return (ulong)rnd.Next();
+        }
 
-		public static byte Byte()
-		{
-			return (byte)rnd.Next();
-		}
+        public static byte Byte()
+        {
+            return (byte)rnd.Next();
+        }
 
-		public static short Short()
-		{
-			return (short)rnd.Next();
-		}
+        public static short Short()
+        {
+            return (short)rnd.Next();
+        }
 
-		public static char Char()
-		{
-			return (char)Byte();
-		}
+        public static char Char()
+        {
+            return (char)Byte();
+        }
 
         public static string String(string hint = "")
         {
@@ -101,9 +95,9 @@ namespace TestDataGenerator
             return vals.GetValue(rnd.Next(0, vals.Length));
         }
 
-		public static T RandomFromCollection<T>(IEnumerable<T> candidates)
-		{
-			return candidates.ElementAt(Integer(candidates.Count()));
-		}
-	}
+        public static T RandomFromCollection<T>(IEnumerable<T> candidates)
+        {
+            return candidates.ElementAt(Integer(candidates.Count()));
+        }
+    }
 }

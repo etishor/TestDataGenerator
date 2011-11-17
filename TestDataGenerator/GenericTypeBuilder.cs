@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="GenericTypeBuilder.cs" company="Recognos Romania">
-// {RecognosCopyrightTextPlaceholder}
-// </copyright>
-// -----------------------------------------------------------------------
-
-using System;
+﻿using System;
 namespace TestDataGenerator
 {
 
