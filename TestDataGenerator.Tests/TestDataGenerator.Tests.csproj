@@ -53,6 +53,7 @@
     <Compile Include="CollectionTests.cs" />
     <Compile Include="CyclicObjectTests.cs" />
     <Compile Include="InterfaceTests.cs" />
+    <Compile Include="ObjectDataTreeTests.cs" />
     <Compile Include="ObjectTests.cs" />
     <Compile Include="PrimitiveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

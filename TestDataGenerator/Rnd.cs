@@ -51,6 +51,30 @@
             return (byte)rnd.Next();
         }
 
+        public static sbyte SByte()
+        {
+            return (sbyte)rnd.Next();
+        }
+
+        public static ushort UShort()
+        {
+            return (ushort)rnd.Next();
+        }
+
+        public static float Float()
+        {
+            return (float)(rnd.NextDouble() * Integer());
+        }
+
+        public static double Double()
+        {
+            return (double)(rnd.NextDouble() * Integer());
+        }
+
+        public static decimal Decimal()
+        {
+            return (decimal)Double();
+        }
         public static short Short()
         {
             return (short)rnd.Next();
@@ -99,5 +123,7 @@
         {
             return candidates.ElementAt(Integer(candidates.Count()));
         }
+
+
     }
 }

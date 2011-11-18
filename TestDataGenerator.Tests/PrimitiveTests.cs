@@ -29,17 +29,23 @@ namespace TestDataGenerator.Tests
 		[Test]
 		public void Catalog_Can_Create_Primitives()
 		{
-			Verify<bool>();
+            Verify<byte>();
+            Verify<sbyte>();
+            Verify<short>();
+            Verify<ushort>();
 			Verify<int>();
 			Verify<uint>();
 			Verify<long>();
 			Verify<ulong>();
-			Verify<byte>();
-			Verify<short>();
+            Verify<float>();
+            Verify<double>();
+            Verify<decimal>();
+            Verify<bool>();			
 			Verify<char>();
 			Verify<string>();
 			Verify<DateTime>();
 			Verify<Uri>();
+            Verify<Guid>();
 		}
 
 		[Test]
@@ -51,17 +57,23 @@ namespace TestDataGenerator.Tests
 		[Test]
 		public void Builder_Can_Create_Primitives()
 		{
-			VerifyBuilder<bool>();
-			VerifyBuilder<int>();
-			VerifyBuilder<uint>();
-			VerifyBuilder<long>();
-			VerifyBuilder<ulong>();
-			VerifyBuilder<byte>();
-			VerifyBuilder<short>();
-			VerifyBuilder<char>();
-			VerifyBuilder<string>();
-			VerifyBuilder<DateTime>();
-			VerifyBuilder<Uri>();
+            VerifyBuilder<byte>();
+            VerifyBuilder<sbyte>();
+            VerifyBuilder<short>();
+            VerifyBuilder<ushort>();
+            VerifyBuilder<int>();
+            VerifyBuilder<uint>();
+            VerifyBuilder<long>();
+            VerifyBuilder<ulong>();
+            VerifyBuilder<float>();
+            VerifyBuilder<double>();
+            VerifyBuilder<decimal>();
+            VerifyBuilder<bool>();
+            VerifyBuilder<char>();
+            VerifyBuilder<string>();
+            VerifyBuilder<DateTime>();
+            VerifyBuilder<Uri>();
+            VerifyBuilder<Guid>();			
 		}
 
 		[Test]

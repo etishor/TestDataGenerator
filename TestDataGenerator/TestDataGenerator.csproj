@@ -38,6 +38,7 @@
     <Compile Include="CollectionsBuilder.cs" />
     <Compile Include="InterfaceBuilder.cs" />
     <Compile Include="GenericTypeBuilder.cs" />
+    <Compile Include="ObjectDataTree.cs" />
     <Compile Include="Rnd.cs" />
     <Compile Include="TypeBuilder.cs" />
     <Compile Include="Catalog.cs" />

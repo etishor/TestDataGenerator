@@ -6,6 +6,7 @@ namespace TestDataGenerator
 {
     public class CollectionsBuilder : IBuildInstances
     {
+        private const int CollectionLimit = 10;
         private readonly Catalog catalog;
 
         public CollectionsBuilder(Catalog catalog)
@@ -29,9 +30,9 @@ namespace TestDataGenerator
 
             return generic == typeof(IEnumerable<>) ||
                 generic == typeof(ICollection<>) ||
-                generic == typeof(IList<>) ||
-                generic == typeof(ISet<>) ||
-                generic == typeof(IDictionary<,>);
+                generic == typeof(IList<>) || generic == typeof(List<>) ||
+                generic == typeof(ISet<>) || generic == typeof(HashSet<>) ||
+                generic == typeof(IDictionary<,>) || generic == typeof(Dictionary<,>);
         }
 
         public object CreateInstance(Type type, string name)
@@ -50,19 +51,19 @@ namespace TestDataGenerator
                     return CreateArrayFromElement(argument);
                 }
 
-                if (genericType == typeof(ICollection<>) || genericType == typeof(IList<>))
+                if (genericType == typeof(ICollection<>) || genericType == typeof(IList<>) || genericType == typeof(List<>))
                 {
                     Type argument = type.GetGenericArguments().Single();
                     return CreateListFromElement(argument);
                 }
 
-                if (genericType == typeof(ISet<>))
+                if (genericType == typeof(ISet<>) || genericType == typeof(HashSet<>))
                 {
                     Type argument = type.GetGenericArguments().Single();
                     return CreateSetFromElement(argument);
                 }
 
-                if (genericType == typeof(IDictionary<,>))
+                if (genericType == typeof(IDictionary<,>) || genericType == typeof(Dictionary<,>))
                 {
                     Type[] arguments = type.GetGenericArguments();
                     return CreateDictionaryFromElements(arguments[0], arguments[1]);
@@ -75,11 +76,11 @@ namespace TestDataGenerator
         private object CreateListFromElement(Type element)
         {
             Type list = typeof(List<>).MakeGenericType(element);
-            object instance = this.catalog.CreateInstance(list);
+            object instance = Activator.CreateInstance(list);
 
             var add = list.GetMethod("Add");
 
-            for (int i = 0; i < Rnd.Integer(10); i++)
+            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
             {
                 add.Invoke(instance, new object[] { this.catalog.CreateInstance(element) });
             }
@@ -89,13 +90,19 @@ namespace TestDataGenerator
         private object CreateSetFromElement(Type element)
         {
             Type set = typeof(HashSet<>).MakeGenericType(element);
-            object instance = this.catalog.CreateInstance(set);
+            object instance = Activator.CreateInstance(set);
 
             var add = set.GetMethod("Add");
+            var container = set.GetMethod("Contains");
 
-            for (int i = 0; i < Rnd.Integer(10); i++)
+            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
             {
-                add.Invoke(instance, new object[] { this.catalog.CreateInstance(element, i.ToString()) });
+                object el = this.catalog.CreateInstance(element, i.ToString());
+                bool added = (bool)container.Invoke(instance, new object[] { el });
+                if (!added)
+                {
+                    add.Invoke(instance, new object[] { el });
+                }
             }
             return instance;
         }
@@ -103,17 +110,21 @@ namespace TestDataGenerator
         private object CreateDictionaryFromElements(Type keyType, Type valueType)
         {
             Type dictionary = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
-            object instance = this.catalog.CreateInstance(dictionary);
+            object instance = Activator.CreateInstance(dictionary);
 
             var add = dictionary.GetMethod("Add");
+            var contains = dictionary.GetMethod("ContainsKey");
 
-            for (int i = 0; i < Rnd.Integer(10); i++)
+            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
             {
-                add.Invoke(instance, new object[] 
-                { 
-                    this.catalog.CreateInstance(keyType, i.ToString()), 
-                    this.catalog.CreateInstance(valueType,i.ToString())
-                });
+                object key = this.catalog.CreateInstance(keyType, i.ToString());
+                object val = this.catalog.CreateInstance(valueType, i.ToString());
+
+                bool added = (bool)contains.Invoke(instance, new object[] { key });
+                if (!added)
+                {
+                    add.Invoke(instance, new object[] { key, val });
+                }
             }
 
             return instance;
@@ -137,7 +148,7 @@ namespace TestDataGenerator
             }
 
             Type element = type.GetElementType();
-            int len = Rnd.Integer(10);
+            int len = Rnd.Integer(CollectionLimit);
 
             // arrays only have one constructor
             var array = type.GetConstructors().Single().Invoke(new object[] { len });
