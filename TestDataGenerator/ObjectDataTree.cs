@@ -9,6 +9,12 @@ namespace TestDataGenerator
     using System.Text;
     using System.Text.RegularExpressions;
 
+	/// <summary>
+	/// Helper class to read the fields of an object and expose them as strings.
+	/// </summary>
+	/// <remarks>
+	/// This class is intended to be used for checking if two objects have the same state.
+	/// </remarks>
     public class ObjectDataTree
     {
         public ObjectDataTree(object instance, Type type, string fieldName)
@@ -58,7 +64,7 @@ namespace TestDataGenerator
 
             if (IsComparable(this.Type))
             {
-                return string.Format("{0}{1}\"{2}\"", prefix, name, this.Instance.ToString().Replace("\"", "\\\""));
+                return string.Format("{0}{1}\"{2}\"", prefix, name, GetInstanceString(this.Instance).Replace("\"", "\\\""));
             }
 
             StringBuilder builder = new StringBuilder();
@@ -85,6 +91,16 @@ namespace TestDataGenerator
             }
             return builder.ToString();
         }
+
+		private string GetInstanceString(object instance)
+		{
+			if(this.Type == typeof(DateTime))
+			{
+				return ((DateTime)instance).ToUniversalTime().ToString();
+			}
+
+			return instance.ToString();
+		}
 
         private bool IsComparable(Type type)
         {
@@ -120,20 +136,13 @@ namespace TestDataGenerator
         }
 
         private static readonly ISet<Type> comparableTypes = new HashSet<Type> {
-            typeof(sbyte),
-            typeof(byte), 
-            typeof(short), 
-            typeof(ushort), 
-            typeof(int),
-            typeof(uint),
-            typeof(long),
-            typeof(ulong),
-            typeof(char),
-            typeof(float),
-            typeof(double), 
+            typeof(sbyte),typeof(byte), typeof(short), typeof(ushort), 
+            typeof(int),typeof(uint),typeof(long),typeof(ulong),
+            typeof(float),typeof(double), typeof(decimal),
             typeof(bool),
-            typeof(decimal),
+            typeof(char),
             typeof(string),
+			typeof(TimeSpan),
             typeof(DateTime),
             typeof(Guid),
             typeof(Uri)

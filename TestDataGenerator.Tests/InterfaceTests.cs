@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="InterfaceTests.cs" company="Recognos Romania">
-// {RecognosCopyrightTextPlaceholder}
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace TestDataGenerator.Tests
+﻿namespace TestDataGenerator.Tests
 {
     using MbUnit.Framework;
 

@@ -43,6 +43,7 @@ namespace TestDataGenerator.Tests
             Verify<bool>();			
 			Verify<char>();
 			Verify<string>();
+			Verify<TimeSpan>();
 			Verify<DateTime>();
 			Verify<Uri>();
             Verify<Guid>();
@@ -71,6 +72,7 @@ namespace TestDataGenerator.Tests
             VerifyBuilder<bool>();
             VerifyBuilder<char>();
             VerifyBuilder<string>();
+			VerifyBuilder<TimeSpan>();
             VerifyBuilder<DateTime>();
             VerifyBuilder<Uri>();
             VerifyBuilder<Guid>();			

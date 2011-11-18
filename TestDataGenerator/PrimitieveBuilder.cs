@@ -24,6 +24,7 @@
             this.builders.Add(typeof(decimal), (s) => Rnd.Decimal());
 
 
+			this.builders.Add(typeof(TimeSpan), (s) => Rnd.TimeSpan());
             this.builders.Add(typeof(DateTime), (s) => Rnd.Date());
             this.builders.Add(typeof(string), (s) => Rnd.String(s));
             this.builders.Add(typeof(Uri), (s) => Rnd.Uri(s));

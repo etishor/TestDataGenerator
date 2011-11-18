@@ -107,6 +107,11 @@
         {
             return new Uri(string.Format("http://{0}/{1}", string.IsNullOrWhiteSpace(hint) ? "string" : hint, Integer()));
         }
+		
+		public static TimeSpan TimeSpan()
+		{
+			return System.TimeSpan.FromSeconds(Integer(10000));
+		}
 
         public static DateTime Date()
         {
@@ -125,5 +130,5 @@
         }
 
 
-    }
+	}
 }

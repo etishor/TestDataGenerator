@@ -34,6 +34,9 @@
   <ItemGroup>
     <Reference Include="Gallio" />
     <Reference Include="MbUnit" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\lib\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -50,13 +53,54 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CatalogWithSamplesObjectsTests.cs" />
     <Compile Include="CollectionTests.cs" />
     <Compile Include="CyclicObjectTests.cs" />
+    <Compile Include="IAssertEquality.cs" />
+    <Compile Include="IndisposableStream.cs" />
     <Compile Include="InterfaceTests.cs" />
     <Compile Include="ObjectDataTreeTests.cs" />
+    <Compile Include="ObjectDataTreeWithSampleObjectsTests.cs" />
     <Compile Include="ObjectTests.cs" />
     <Compile Include="PrimitiveTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Samples\ArrayField.cs" />
+    <Compile Include="Samples\ArrayProperty.cs" />
+    <Compile Include="Samples\BenchTestObjectA.cs" />
+    <Compile Include="Samples\CollectionOfCustomObjects.cs" />
+    <Compile Include="Samples\CollectionOfStrings.cs" />
+    <Compile Include="Samples\ComposedIDictionaryProperty.cs" />
+    <Compile Include="Samples\CustomObjectProperty.cs" />
+    <Compile Include="Samples\DataContractOnly.cs" />
+    <Compile Include="Samples\DictionaryProperty.cs" />
+    <Compile Include="Samples\EnumerableProperty.cs" />
+    <Compile Include="Samples\IDictionaryProperty.cs" />
+    <Compile Include="Samples\InheritedObject.cs" />
+    <Compile Include="Samples\ListProperty.cs" />
+    <Compile Include="Samples\NoDataContract.cs" />
+    <Compile Include="Samples\ObjectProperty.cs" />
+    <Compile Include="Samples\ObjectPropertyWithCustomValue.cs" />
+    <Compile Include="Samples\PrimitiveTypes.cs" />
+    <Compile Include="Samples\PrivateField.cs" />
+    <Compile Include="Samples\PrivateProperty.cs" />
+    <Compile Include="Samples\PrivateSetterNameInConstructor.cs" />
+    <Compile Include="Samples\PrivateSetterNameInConstructorWithPrivateParameterlessConstructor.cs" />
+    <Compile Include="Samples\PrivateSetterNameNotInConstructor.cs" />
+    <Compile Include="Samples\PrivateSetterNameNotInConstructorWithPrivateParameterlessConstructor.cs" />
+    <Compile Include="Samples\PublicField.cs" />
+    <Compile Include="Samples\PublicFieldWithNonDefaultConstructor.cs" />
+    <Compile Include="Samples\PublicReadonlyFieldWithNamesInConstructorNoAttributes.cs" />
+    <Compile Include="Samples\PublicReadOnlyNamesInConstructor.cs" />
+    <Compile Include="Samples\PublicReadOnlyNamesInConstructorWithPrivateParameterlessConstructor.cs" />
+    <Compile Include="Samples\PublicReadOnlyNamesNotInConstructor.cs" />
+    <Compile Include="Samples\PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor.cs" />
+    <Compile Include="Samples\PublicSetter.cs" />
+    <Compile Include="Samples\SealedPublicReadOnlyNamesInConstructor.cs" />
+    <Compile Include="Samples\SealedPublicReadOnlyNamesInConstructorNoAttributes.cs" />
+    <Compile Include="Samples\SealedPublicReadOnlyNamesInConstructorWithPrivateParameterlessConstructor.cs" />
+    <Compile Include="Samples\SerializableOnly.cs" />
+    <Compile Include="Samples\UriField.cs" />
+    <Compile Include="Samples\UriWithQuotesAndSlashes.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestDataGenerator\TestDataGenerator.csproj">
