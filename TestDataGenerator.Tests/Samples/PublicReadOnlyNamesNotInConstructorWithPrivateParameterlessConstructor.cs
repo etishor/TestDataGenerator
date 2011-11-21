@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Runtime.Serialization;
 using MbUnit.Framework;
-using System.Runtime.Serialization;
 
 
 namespace TestDataGenerator.Tests.Samples
-{   
+{
+    [DataContract]
     public class PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor : IAssertEquality
     {
+        [DataMember]
         public readonly int IntValue;
+
+        private PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor()
+        { }
 
         public PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor(int otherIntValue)
         {

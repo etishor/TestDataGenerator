@@ -45,13 +45,8 @@ namespace TestDataGenerator
             if (type.IsGenericType)
             {
                 Type genericType = type.GetGenericTypeDefinition();
-                if (genericType == typeof(IEnumerable<>))
-                {
-                    Type argument = type.GetGenericArguments().Single();
-                    return CreateArrayFromElement(argument);
-                }
 
-                if (genericType == typeof(ICollection<>) || genericType == typeof(IList<>) || genericType == typeof(List<>))
+                if (genericType == typeof(IEnumerable<>) || genericType == typeof(ICollection<>) || genericType == typeof(IList<>) || genericType == typeof(List<>))
                 {
                     Type argument = type.GetGenericArguments().Single();
                     return CreateListFromElement(argument);
@@ -76,15 +71,7 @@ namespace TestDataGenerator
         private object CreateListFromElement(Type element)
         {
             Type list = typeof(List<>).MakeGenericType(element);
-            object instance = Activator.CreateInstance(list);
-
-            var add = list.GetMethod("Add");
-
-            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
-            {
-                add.Invoke(instance, new object[] { this.catalog.CreateInstance(element) });
-            }
-            return instance;
+            return Activator.CreateInstance(list);
         }
 
         private object CreateSetFromElement(Type element)
@@ -128,11 +115,6 @@ namespace TestDataGenerator
             }
 
             return instance;
-        }
-
-        private object CreateArrayFromElement(Type element)
-        {
-            return CreateArray(element.MakeArrayType());
         }
 
         /// <summary>

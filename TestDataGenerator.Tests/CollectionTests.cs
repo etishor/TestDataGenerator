@@ -164,5 +164,20 @@ namespace TestDataGenerator.Tests
             object result = catalog.CreateInstance(typeof(IDictionary<int, string>));
             Assert.IsInstanceOfType<IDictionary<int, string>>(result);
         }
+
+        class TestClass
+        {
+            public IDictionary<string, List<string>> Value { get; set; }
+        }
+
+        [Test]
+        public void Catalog_Can_Create_Object_With_Composed_Collection()
+        {
+            Catalog catalog = new Catalog();
+            object result = catalog.CreateInstance(typeof(TestClass));
+            Assert.IsInstanceOfType<TestClass>(result);
+            TestClass instance = result as TestClass;
+            Assert.IsInstanceOfType<IDictionary<string, List<string>>>(instance.Value);
+        }
     }
 }

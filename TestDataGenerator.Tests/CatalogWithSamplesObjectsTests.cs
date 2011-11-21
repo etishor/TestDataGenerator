@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using MbUnit.Framework;
 using System.IO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Linq;
 using System.Reflection;
+using MbUnit.Framework;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
+using Newtonsoft.Json.Serialization;
+using TestDataGenerator.Tests.Samples;
 
 namespace TestDataGenerator.Tests
-{	
-	public class CatalogWithSamplesObjectsTests
-	{
+{
+    public class CatalogWithSamplesObjectsTests
+    {
         private static JsonSerializer serializer = new JsonSerializer()
         {
             MissingMemberHandling = MissingMemberHandling.Error,
@@ -22,22 +23,21 @@ namespace TestDataGenerator.Tests
             }
         };
 
-		[StaticTestFactory]
-		public static IEnumerable<Test> CreateTests()
-		{
-			foreach (Type message in GetMessages())
-			{
-				TestCase test = new TestCase(message.Name, () => RunTest(message));
-				yield return test;
-			}
-		}
+        [StaticTestFactory]
+        public static IEnumerable<Test> CreateTests()
+        {
+            return GetMessages().Select(m => new TestCase(m.Name, () => RunTest(m)));
+        }
 
-		private static void RunTest(Type message)
-		{
-			Catalog catalog = new Catalog();
+        private static void RunTest(Type message)
+        {
+            Catalog catalog = new Catalog();
+            catalog.RegisterBuilder<ObjectPropertyWithCustomValue>().WithPostConstruction(o => ((ObjectPropertyWithCustomValue)o).Value = catalog.CreateInstance<CustomObject>());
+
+
             IAssertEquality instance = (IAssertEquality)catalog.CreateInstance(message);
-			Assert.IsInstanceOfType(message, instance);
-                        
+            Assert.IsInstanceOfType(message, instance);
+
             ObjectDataTree messageTree = new ObjectDataTree(instance);
 
             using (MemoryStream ms = new MemoryStream())
@@ -49,18 +49,18 @@ namespace TestDataGenerator.Tests
 
                 ObjectDataTree resultTree = new ObjectDataTree(result);
                 Assert.AreEqual(messageTree.StringValue(), resultTree.StringValue());
-                
+
                 instance.AssertEquality(result);
             }
 
-		}
+        }
 
-		public static IEnumerable<Type> GetMessages()
-		{
-			return typeof(IAssertEquality).Assembly.GetTypes()
-				.Where(t => !t.IsInterface)
-				.Where(t => typeof(IAssertEquality).IsAssignableFrom(t));
-		}
+        public static IEnumerable<Type> GetMessages()
+        {
+            return typeof(IAssertEquality).Assembly.GetTypes()
+                .Where(t => !t.IsInterface)
+                .Where(t => typeof(IAssertEquality).IsAssignableFrom(t));
+        }
 
         public static void Serialize(Stream stream, object instance)
         {
@@ -77,5 +77,5 @@ namespace TestDataGenerator.Tests
                 return serializer.Deserialize(reader, type);
             }
         }
-	}
+    }
 }

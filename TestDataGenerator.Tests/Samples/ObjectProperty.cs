@@ -15,7 +15,7 @@ namespace TestDataGenerator.Tests.Samples
     {
        
        
-        private object Value {get;set;}
+        public object Value {get;set;}
 
         public static ObjectProperty CreateInstance()
         {
@@ -27,7 +27,7 @@ namespace TestDataGenerator.Tests.Samples
             Assert.IsNotNull(other);
             Assert.IsInstanceOfType<ObjectProperty>(other);
             ObjectProperty target = other as ObjectProperty;
-
+            Assert.IsNotNull(this.Value);
             Assert.IsInstanceOfType(this.Value.GetType(), target.Value);
         }
     }

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
 
 using MbUnit.Framework;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class CollectionOfCustomObjects : List<CustomObject>, IAssertEquality
     {
         public static CollectionOfCustomObjects CreateInstance()
@@ -24,8 +20,8 @@ namespace TestDataGenerator.Tests.Samples
             Assert.IsInstanceOfType<CollectionOfCustomObjects>(other);
             CollectionOfCustomObjects target = other as CollectionOfCustomObjects;
 
-            Assert.IsInstanceOfType(typeof(CustomObject), target.Single());
-            Assert.AreEqual(this.Single().Value, target.Single().Value);
+            Assert.AreEqual(this.Count, target.Count);
+            Assert.AreElementsEqual(this, target, new Gallio.Common.EqualityComparison<CustomObject>((a, b) => a.Value == b.Value));
         }
     }
 }

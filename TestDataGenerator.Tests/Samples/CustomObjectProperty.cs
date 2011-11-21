@@ -7,25 +7,15 @@ using System.Runtime.Serialization;
 using MbUnit.Framework;
 
 namespace TestDataGenerator.Tests.Samples
-{
-    
-    
-    
+{   
     public class CustomObject
     {
-       
-       
         public int Value { get; set; }
     }
 
-    
-    
-    
     public class CustomObjectProperty : IAssertEquality
-    {
-       
-       
-        private CustomObject Value { get; set; }
+    {  
+        public CustomObject Value { get; set; }
 
         public static CustomObjectProperty CreateInstance()
         {

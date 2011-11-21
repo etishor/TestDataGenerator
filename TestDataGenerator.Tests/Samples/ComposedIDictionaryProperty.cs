@@ -15,7 +15,7 @@ namespace TestDataGenerator.Tests.Samples
     {
        
        
-        private IDictionary<int,List<string>> Value { get; set; }
+        public IDictionary<int,List<string>> Value { get; set; }
 
         public static ComposedIDictionaryProperty CreateInstance()
         {

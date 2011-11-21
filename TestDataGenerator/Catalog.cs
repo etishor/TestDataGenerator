@@ -15,6 +15,7 @@ namespace TestDataGenerator
     public class Catalog
     {
         private readonly IList<IBuildInstances> builders = new List<IBuildInstances>();
+        private readonly List<IPostCreationHandler> postCreationHandlers = new List<IPostCreationHandler>();
 
         private int recursionLevel = 0;
 
@@ -28,6 +29,8 @@ namespace TestDataGenerator
             this.RegisterCustomBuilder(new CollectionsBuilder(this));
 
             this.RegisterCustomBuilder(new PrimitieveBuilder());
+
+            this.RegisterPostCreationHandler(new CollectionPostCreationHandler(this));
         }
 
         /// <summary>
@@ -76,6 +79,18 @@ namespace TestDataGenerator
             return builder;
         }
 
+        public T RegisterPostCreationHandler<T>(T handler)
+            where T : IPostCreationHandler
+        {
+            if (handler == null)
+            {
+                throw new ArgumentNullException("handler");
+            }
+
+            this.postCreationHandlers.Add(handler);
+            return handler;
+        }
+
         /// <summary>
         /// Creates an instance of <paramref name="type"/>.
         /// </summary>
@@ -104,7 +119,11 @@ namespace TestDataGenerator
                     throw new InvalidOperationException(string.Format("Unable to find a suitable builder for type {0}", type));
                 }
 
-                return builder.CreateInstance(type, name);
+                object instance = builder.CreateInstance(type, name);
+
+                postCreationHandlers.ForEach(h => h.ApplyPostCreationRule(instance));
+
+                return instance;
             }
             finally
             {

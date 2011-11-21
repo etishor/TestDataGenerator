@@ -35,9 +35,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionPostCreationHandler.cs" />
     <Compile Include="CollectionsBuilder.cs" />
     <Compile Include="InterfaceBuilder.cs" />
     <Compile Include="GenericTypeBuilder.cs" />
+    <Compile Include="IPostCreationHandler.cs" />
     <Compile Include="ObjectDataTree.cs" />
     <Compile Include="Rnd.cs" />
     <Compile Include="TypeBuilder.cs" />
