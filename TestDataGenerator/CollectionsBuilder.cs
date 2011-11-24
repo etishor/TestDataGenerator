@@ -7,6 +7,7 @@ namespace TestDataGenerator
     public class CollectionsBuilder : IBuildInstances
     {
         private const int CollectionLimit = 10;
+        private const int MinCollectionLimit = 1;
         private readonly Catalog catalog;
 
         public CollectionsBuilder(Catalog catalog)
@@ -82,7 +83,7 @@ namespace TestDataGenerator
             var add = set.GetMethod("Add");
             var container = set.GetMethod("Contains");
 
-            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
+            for (int i = 0; i < Rnd.Integer(MinCollectionLimit, CollectionLimit); i++)
             {
                 object el = this.catalog.CreateInstance(element, i.ToString());
                 bool added = (bool)container.Invoke(instance, new object[] { el });
@@ -102,7 +103,7 @@ namespace TestDataGenerator
             var add = dictionary.GetMethod("Add");
             var contains = dictionary.GetMethod("ContainsKey");
 
-            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
+            for (int i = 0; i < Rnd.Integer(MinCollectionLimit, CollectionLimit); i++)
             {
                 object key = this.catalog.CreateInstance(keyType, i.ToString());
                 object val = this.catalog.CreateInstance(valueType, i.ToString());
@@ -130,7 +131,7 @@ namespace TestDataGenerator
             }
 
             Type element = type.GetElementType();
-            int len = Rnd.Integer(CollectionLimit);
+            int len = Rnd.Integer(MinCollectionLimit, CollectionLimit);
 
             // arrays only have one constructor
             var array = type.GetConstructors().Single().Invoke(new object[] { len });

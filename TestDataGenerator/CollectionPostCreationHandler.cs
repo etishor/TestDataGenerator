@@ -16,6 +16,7 @@ namespace TestDataGenerator
     public class CollectionPostCreationHandler : IPostCreationHandler
     {
         private const int CollectionLimit = 10;
+        private const int MinCollectionLimit = 1;
 
         private readonly Catalog catalog;
 
@@ -66,7 +67,7 @@ namespace TestDataGenerator
 
             var add = instanceType.GetMethod("Add");
 
-            for (int i = 0; i < Rnd.Integer(CollectionLimit); i++)
+            for (int i = 0; i < Rnd.Integer(MinCollectionLimit, CollectionLimit); i++)
             {
                 add.Invoke(instance, new object[] { this.catalog.CreateInstance(elementType) });
             }

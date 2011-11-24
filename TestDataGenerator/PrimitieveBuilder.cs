@@ -24,9 +24,9 @@
             this.builders.Add(typeof(decimal), (s) => Rnd.Decimal());
 
 
-			this.builders.Add(typeof(TimeSpan), (s) => Rnd.TimeSpan());
+            this.builders.Add(typeof(TimeSpan), (s) => Rnd.TimeSpan());
             this.builders.Add(typeof(DateTime), (s) => Rnd.Date());
-            this.builders.Add(typeof(string), (s) => Rnd.String(s));
+            this.builders.Add(typeof(string), BuildString);
             this.builders.Add(typeof(Uri), (s) => Rnd.Uri(s));
             this.builders.Add(typeof(Guid), (s) => Guid.NewGuid());
 
@@ -52,5 +52,37 @@
             return this.builders[type](name);
         }
 
+
+        private static string BuildString(string name)
+        {
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                if (name.Contains("Name"))
+                {
+                    return Faker.NameFaker.Name();
+                }
+
+                if (name.Contains("Phone"))
+                {
+                    return Faker.PhoneFaker.Phone();
+                }
+
+                if (name.Contains("Email"))
+                {
+                    return Faker.InternetFaker.Email();
+                }
+
+                if (name.Contains("Url") || name.Contains("Uri"))
+                {
+                    return Faker.InternetFaker.Url();
+                }
+
+                if (name.Contains("Text") || name.Contains("Content"))
+                {
+                    return Faker.TextFaker.Sentences(3);
+                }
+            }
+            return Rnd.String(name);
+        }
     }
 }
