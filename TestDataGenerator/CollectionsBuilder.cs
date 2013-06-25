@@ -133,8 +133,13 @@ namespace TestDataGenerator
             Type element = type.GetElementType();
             int len = Rnd.Integer(MinCollectionLimit, CollectionLimit);
 
-            // arrays only have one constructor
-            var array = type.GetConstructors().Single().Invoke(new object[] { len });
+            var constructor = type.GetConstructors()
+                .OrderBy(c => c.GetParameters().Count())
+                .FirstOrDefault();
+
+            //var constructor = constructors.Single();
+
+            var array = constructor.Invoke(new object[] { len });
 
             var setter = type.GetMethod("SetValue", new Type[] { typeof(object), typeof(int) });
 
