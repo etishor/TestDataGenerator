@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 using System.Runtime.Serialization;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
+
     public class DataContractOnly : IAssertEquality
     {
-       
+
         public int ValueField;
 
-       
+
         public int ValueProperty { get; set; }
 
         public static DataContractOnly CreateInstance()
@@ -23,12 +24,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<DataContractOnly>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<DataContractOnly>();
             DataContractOnly target = other as DataContractOnly;
 
-            Assert.AreEqual(this.ValueField, target.ValueField);
-            Assert.AreEqual(this.ValueProperty, target.ValueProperty);
+            target.ValueField.Should().Be(this.ValueField);
+            target.ValueProperty.Should().Be(this.ValueProperty);
         }
     }
 }

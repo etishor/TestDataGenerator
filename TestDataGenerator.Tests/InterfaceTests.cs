@@ -1,8 +1,9 @@
 ﻿namespace TestDataGenerator.Tests
 {
-    using MbUnit.Framework;
+    using FluentAssertions;
+    using Xunit;
 
-    [TestFixture]
+
     public class InterfaceTests
     {
         interface TestInterface
@@ -35,7 +36,7 @@
             }
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Populate_Interface()
         {
             Catalog catalog = new Catalog();
@@ -45,11 +46,11 @@
 
             object instance = catalog.CreateInstance(typeof(TestInterface));
 
-            Assert.IsNotNull(instance, "instance");
-            Assert.IsInstanceOfType<TestInterface>(instance);
+            instance.Should().NotBeNull();
+            instance.Should().BeAssignableTo<TestInterface>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Class_With_Interface_Property()
         {
             Catalog catalog = new Catalog();
@@ -58,12 +59,14 @@
                 .WithConstructor(() => new TestClass());
 
             object instance = catalog.CreateInstance(typeof(ClassWithInterfaceProperty));
-            Assert.IsInstanceOfType<ClassWithInterfaceProperty>(instance);
+            instance.Should().BeOfType<ClassWithInterfaceProperty>();
+
             ClassWithInterfaceProperty sample = instance as ClassWithInterfaceProperty;
-            Assert.IsInstanceOfType<TestInterface>(sample.Property);
+            sample.Property.Should().NotBeNull();
+            sample.Property.Should().BeAssignableTo<TestInterface>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Class_With_Interface_In_Constructor()
         {
             Catalog catalog = new Catalog();
@@ -72,9 +75,15 @@
                 .WithConstructor(() => new TestClass());
 
             object instance = catalog.CreateInstance(typeof(ClassWithInterfaceInConstructor));
-            Assert.IsInstanceOfType<ClassWithInterfaceInConstructor>(instance);
+
+            instance.Should().BeOfType<ClassWithInterfaceInConstructor>();
+
+            Assert.IsType<ClassWithInterfaceInConstructor>(instance);
             ClassWithInterfaceInConstructor sample = instance as ClassWithInterfaceInConstructor;
-            Assert.IsInstanceOfType<TestInterface>(sample.Get());
+            var property = sample.Get();
+
+            property.Should().NotBeNull();
+            property.Should().BeAssignableTo<TestInterface>();
         }
     }
 }

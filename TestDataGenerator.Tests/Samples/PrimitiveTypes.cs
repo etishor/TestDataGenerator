@@ -1,41 +1,41 @@
 ﻿using System;
 
-using MbUnit.Framework;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class PrimitiveTypes : IAssertEquality
     {
-       
-       
+
+
         public int IntValue;
 
-       
-       
+
+
         public decimal DecimalValue;
 
-       
-       
+
+
         public DateTime DateValue;
 
-       
-       
+
+
         public TimeSpan TimeSpanValue;
 
-       
-       
+
+
         public Guid GuidValue;
 
-       
+
         public string StringValue;
 
-       
+
         public long LongValue;
 
-      
+
         public double DoubleValue;
 
         public static PrimitiveTypes CreateInstance()
@@ -44,7 +44,7 @@ namespace TestDataGenerator.Tests.Samples
             {
                 IntValue = 10,
                 DecimalValue = 10.1m,
-                DateValue = DateTime.Now.ToUniversalTime(),
+                DateValue = DateTime.Now,
                 TimeSpanValue = TimeSpan.FromSeconds(20),
                 GuidValue = Guid.NewGuid(),
                 StringValue = "string",
@@ -55,21 +55,21 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<PrimitiveTypes>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<PrimitiveTypes>();
 
             PrimitiveTypes target = other as PrimitiveTypes;
 
-            Assert.AreEqual(this.IntValue, target.IntValue);
-            Assert.AreEqual(this.DecimalValue, target.DecimalValue);
-            Assert.AreApproximatelyEqual(this.DateValue.ToUniversalTime(), target.DateValue.ToUniversalTime(), TimeSpan.FromMilliseconds(1));
-            Assert.AreEqual(this.TimeSpanValue, target.TimeSpanValue);
-            Assert.AreEqual(this.GuidValue, target.GuidValue);
-            Assert.AreEqual(this.StringValue, target.StringValue);
-            Assert.AreEqual(this.LongValue, target.LongValue);
-            Assert.AreEqual(Math.Round(this.DoubleValue, 6), Math.Round(target.DoubleValue, 6));
+            target.IntValue.Should().Be(this.IntValue);
+            target.DecimalValue.Should().Be(this.DecimalValue);
+            target.DateValue.Should().BeCloseTo(this.DateValue);
+            target.TimeSpanValue.Should().Be(this.TimeSpanValue);
+            target.GuidValue.Should().Be(this.GuidValue);
+            target.StringValue.Should().Be(this.StringValue);
+            target.LongValue.Should().Be(this.LongValue);
+            target.DoubleValue.Should().BeApproximately(this.DoubleValue, 0.01);
         }
 
-       
+
     }
 }

@@ -3,23 +3,24 @@ namespace TestDataGenerator.Tests.Samples
 {
     using System;
     using System.Runtime.Serialization;
-    using MbUnit.Framework;
-    
+    using Xunit;
+    using FluentAssertions;
 
-    
-    
-    
+
+
+
+
     public class UriWithQuotesAndSlashes : IAssertEquality
     {
-		public const string UriQuotes = @"http://test.com/%22foo+bar%22";
-		public const string UriSlash = @"http://tes/?a=b\\c&d=e\";
+        public const string UriQuotes = @"http://test.com/%22foo+bar%22";
+        public const string UriSlash = @"http://tes/?a=b\\c&d=e\";
 
-       
-       
+
+
         public Uri ValueWithQuotes { get; set; }
 
-       
-       
+
+
         public Uri ValueWithSlashes { get; set; }
 
         public static UriWithQuotesAndSlashes CreateInstance()
@@ -33,12 +34,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<UriWithQuotesAndSlashes>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<UriWithQuotesAndSlashes>();
             UriWithQuotesAndSlashes target = other as UriWithQuotesAndSlashes;
 
-            Assert.AreEqual(this.ValueWithQuotes.ToString(), target.ValueWithQuotes.ToString());
-            Assert.AreEqual(this.ValueWithSlashes.ToString(), target.ValueWithSlashes.ToString());
+            target.ValueWithQuotes.ToString().Should().Be(this.ValueWithQuotes.ToString());
+            target.ValueWithSlashes.ToString().Should().Be(this.ValueWithSlashes.ToString());
         }
     }
 }

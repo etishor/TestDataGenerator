@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using MbUnit.Framework;
+using FluentAssertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json.Serialization;
+using Xunit.Extensions;
 
 namespace TestDataGenerator.Tests
 {
@@ -22,10 +23,18 @@ namespace TestDataGenerator.Tests
             }
         };
 
-        [StaticTestFactory]
-        public static IEnumerable<Test> CreateTests()
+        public static IEnumerable<object[]> Messages
         {
-            return GetMessages().Select(m => new TestCase(m.Name, () => RunTest(m)));
+            get
+            {
+                return GetMessages().Select(m => new object[] { m });
+            }
+        }
+
+        [Theory, PropertyData("Messages")]
+        public void Test(Type message)
+        {
+            RunTest(message);
         }
 
         private static void RunTest(Type messageType)
@@ -44,7 +53,7 @@ namespace TestDataGenerator.Tests
                 object result = Deserialize(new IndisposableStream(ms), messageType);
                 ObjectDataTree resultTree = new ObjectDataTree(result);
 
-                Assert.AreEqual(messageTree.StringValue(), resultTree.StringValue());
+                resultTree.StringValue().Should().Be(messageTree.StringValue());
                 message.AssertEquality(result);
             }
         }

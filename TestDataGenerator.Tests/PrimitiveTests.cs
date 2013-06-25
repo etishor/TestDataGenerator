@@ -1,63 +1,68 @@
 ﻿using System;
-using MbUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace TestDataGenerator.Tests
 {
-	[TestFixture]
-	public class PrimitiveTests
-	{
-		enum test
-		{
-			a, b, c
-		}
 
-		private void Verify<T>()
-		{
-			Catalog catalog = new Catalog();
-			Assert.IsInstanceOfType<T>(catalog.CreateInstance(typeof(T)));
-		}
+    public class PrimitiveTests
+    {
+        enum test
+        {
+            a, b, c
+        }
 
-		private void VerifyBuilder<T>()
-		{
-			PrimitieveBuilder builder = new PrimitieveBuilder();
+        private void Verify<T>()
+        {
+            Catalog catalog = new Catalog();
+            catalog.CreateInstance(typeof(T))
+                .Should().BeOfType<T>();
+        }
 
-			Assert.IsTrue(builder.CanCreate(typeof(T)));
-			Assert.IsInstanceOfType<T>(builder.CreateInstance(typeof(T), null));
-		}
-		
+        private void VerifyBuilder<T>()
+        {
+            PrimitieveBuilder builder = new PrimitieveBuilder();
 
-		[Test]
-		public void Catalog_Can_Create_Primitives()
-		{
+            builder.CanCreate(typeof(T))
+                .Should().BeTrue();
+
+            builder.CreateInstance(typeof(T), null)
+                .Should().BeOfType<T>();
+        }
+
+
+        [Fact]
+        public void Catalog_Can_Create_Primitives()
+        {
             Verify<byte>();
             Verify<sbyte>();
             Verify<short>();
             Verify<ushort>();
-			Verify<int>();
-			Verify<uint>();
-			Verify<long>();
-			Verify<ulong>();
+            Verify<int>();
+            Verify<uint>();
+            Verify<long>();
+            Verify<ulong>();
             Verify<float>();
             Verify<double>();
             Verify<decimal>();
-            Verify<bool>();			
-			Verify<char>();
-			Verify<string>();
-			Verify<TimeSpan>();
-			Verify<DateTime>();
-			Verify<Uri>();
+            Verify<bool>();
+            Verify<char>();
+            Verify<string>();
+            Verify<TimeSpan>();
+            Verify<DateTime>();
+            Verify<Uri>();
             Verify<Guid>();
-		}
+        }
 
-		[Test]
-		public void Catalog_Can_Create_Enum()
-		{
-			Verify<test>();
-		}
+        [Fact]
+        public void Catalog_Can_Create_Enum()
+        {
+            Verify<test>();
+        }
 
-		[Test]
-		public void Builder_Can_Create_Primitives()
-		{
+        [Fact]
+        public void Builder_Can_Create_Primitives()
+        {
             VerifyBuilder<byte>();
             VerifyBuilder<sbyte>();
             VerifyBuilder<short>();
@@ -72,37 +77,38 @@ namespace TestDataGenerator.Tests
             VerifyBuilder<bool>();
             VerifyBuilder<char>();
             VerifyBuilder<string>();
-			VerifyBuilder<TimeSpan>();
+            VerifyBuilder<TimeSpan>();
             VerifyBuilder<DateTime>();
             VerifyBuilder<Uri>();
-            VerifyBuilder<Guid>();			
-		}
+            VerifyBuilder<Guid>();
+        }
 
-		[Test]
-		public void Builder_Can_Create_Enum()
-		{
-			VerifyBuilder<test>();
-		}
+        [Fact]
+        public void Builder_Can_Create_Enum()
+        {
+            VerifyBuilder<test>();
+        }
 
-		[Test]
-		public void Builder_Creates_String_From_Name()
-		{
-			PrimitieveBuilder builder = new PrimitieveBuilder();
-			object instance = builder.CreateInstance(typeof(string), "test");
-			Assert.IsInstanceOfType<string>(instance);
-			string stringInstance = instance as string;
-			Assert.Contains(stringInstance, "test");
-		}
+        [Fact]
+        public void Builder_Creates_String_From_Name()
+        {
+            PrimitieveBuilder builder = new PrimitieveBuilder();
+            object instance = builder.CreateInstance(typeof(string), "test");
+            instance.Should().BeOfType<string>();
+            string stringInstance = instance as string;
+            stringInstance.Should().Contain("test");
+        }
 
-		[Test]
-		public void Builder_Creates_Uri_From_Name()
-		{
-			PrimitieveBuilder builder = new PrimitieveBuilder();
-			object instance = builder.CreateInstance(typeof(Uri), "test");
-			Assert.IsInstanceOfType<Uri>(instance);
-			Uri uri = instance as Uri;
-			Assert.Contains(uri.Host, "test");
-		}
+        [Fact]
+        public void Builder_Creates_Uri_From_Name()
+        {
+            PrimitieveBuilder builder = new PrimitieveBuilder();
+            object instance = builder.CreateInstance(typeof(Uri), "test");
 
-	}
+            instance.Should().BeOfType<Uri>();
+            Uri uri = instance as Uri;
+            uri.Host.Should().Contain("test");
+        }
+
+    }
 }

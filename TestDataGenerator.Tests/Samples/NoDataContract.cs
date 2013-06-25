@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
@@ -19,12 +20,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<NoDataContractOnly>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<NoDataContractOnly>();
             NoDataContractOnly target = other as NoDataContractOnly;
 
-            Assert.AreEqual(this.ValueField, target.ValueField);
-            Assert.AreEqual(this.ValueProperty, target.ValueProperty);
+            target.ValueField.Should().Be(this.ValueField);
+            target.ValueProperty.Should().Be(this.ValueProperty);
         }
     }
 }

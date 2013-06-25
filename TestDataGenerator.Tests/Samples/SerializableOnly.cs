@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
+
     public class SerializableOnly : IAssertEquality
     {
         public int ValueField;
@@ -15,17 +16,17 @@ namespace TestDataGenerator.Tests.Samples
 
         public static SerializableOnly CreateInstance()
         {
-            return new SerializableOnly { ValueField = 10 , ValueProperty = 20 };
+            return new SerializableOnly { ValueField = 10, ValueProperty = 20 };
         }
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<SerializableOnly>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<SerializableOnly>();
             SerializableOnly target = other as SerializableOnly;
 
-            Assert.AreEqual(this.ValueField, target.ValueField);
-            Assert.AreEqual(this.ValueProperty, target.ValueProperty);
+            target.ValueField.Should().Be(this.ValueField);
+            target.ValueProperty.Should().Be(this.ValueProperty);
         }
     }
 }

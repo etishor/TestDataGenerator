@@ -4,17 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
-{   
+{
     public class CustomObject
     {
         public int Value { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+
+            var other = obj as CustomObject;
+            if (other == null)
+            {
+                return false;
+            }
+
+            return this.Value == other.Value;
+        }
     }
 
     public class CustomObjectProperty : IAssertEquality
-    {  
+    {
         public CustomObject Value { get; set; }
 
         public static CustomObjectProperty CreateInstance()
@@ -24,14 +41,14 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<CustomObjectProperty>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<CustomObjectProperty>();
             CustomObjectProperty target = other as CustomObjectProperty;
 
-            Assert.AreNotSame(this.Value, target.Value);
-            Assert.IsNotNull(this.Value);
-            Assert.IsNotNull(target.Value);
-            Assert.AreEqual(this.Value.Value, target.Value.Value);
+            target.Value.Should().NotBeSameAs(this.Value);
+            this.Value.Should().NotBeNull();
+            target.Value.Should().NotBeNull();
+            target.Value.Value.Should().Be(this.Value.Value);
         }
     }
 }

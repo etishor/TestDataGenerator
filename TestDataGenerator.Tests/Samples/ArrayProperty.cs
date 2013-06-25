@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class ArrayProperty : IAssertEquality
     {
-       
-       
-        private int[] Value {get;set;}
+
+
+        public int[] Value { get; set; }
 
         public static ArrayProperty CreateInstance()
         {
@@ -24,11 +25,11 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<ArrayProperty>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<ArrayProperty>();
             ArrayProperty target = other as ArrayProperty;
 
-            Assert.AreElementsEqual(this.Value, target.Value);
+            target.Value.Should().Equal(this.Value);
         }
     }
 }

@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class UriField : IAssertEquality
     {
-       
-       
+
+
         public Uri Value;
 
         public static UriField CreateInstance()
@@ -24,11 +25,11 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<UriField>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<UriField>();
             UriField target = other as UriField;
 
-            Assert.AreEqual(this.Value, target.Value);
+            target.Value.Should().Be(this.Value);
         }
     }
 }

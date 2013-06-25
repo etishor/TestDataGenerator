@@ -1,52 +1,53 @@
-﻿using MbUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace TestDataGenerator.Tests
 {
-	[TestFixture]
-	public class CyclicObjectTests
-	{
-		class Sample
-		{
-			public Sample SampleRef { get; set; }
-		}
+    public class CyclicObjectTests
+    {
+        class Sample
+        {
+            public Sample SampleRef { get; set; }
+        }
 
-		void Veirfy(Sample sample, int level, int maxLevel)
-		{
-			if (level >= maxLevel)
-			{
-				Assert.IsNull(sample.SampleRef);
-				return;
-			}
-			
-			Assert.IsNotNull(sample.SampleRef);
-			Veirfy(sample.SampleRef, level + 1, maxLevel);
-		}
+        void Veirfy(Sample sample, int level, int maxLevel)
+        {
+            if (level >= maxLevel)
+            {
+                sample.SampleRef.Should().BeNull();
+                return;
+            }
 
-		[Test]
-		public void Catalog_Can_Create_Cyclic_Object()
-		{
-			Catalog catalog = new Catalog();
-			object instance = catalog.CreateInstance<Sample>();
+            sample.SampleRef.Should().NotBeNull();
+            Veirfy(sample.SampleRef, level + 1, maxLevel);
+        }
 
-			Assert.IsInstanceOfType<Sample>(instance);
-			Sample sample = instance as Sample;
+        [Fact]
+        public void Catalog_Can_Create_Cyclic_Object()
+        {
+            Catalog catalog = new Catalog();
+            object instance = catalog.CreateInstance<Sample>();
 
-			Veirfy(sample, 0, catalog.MaxRecursionDepth);
-		}
+            instance.Should().BeOfType<Sample>();
 
-		[Test]
-		public void Catalog_Can_Create_Array_Of_Cyclic_Object()
-		{
-			Catalog catalog = new Catalog();
-			object instance = catalog.CreateInstance<Sample[]>();
+            Sample sample = instance as Sample;
 
-			Assert.IsInstanceOfType<Sample[]>(instance);
-			Sample[] sample = instance as Sample[];
+            Veirfy(sample, 0, catalog.MaxRecursionDepth);
+        }
 
-			foreach (Sample s in sample)
-			{
-				Veirfy(s, 1, catalog.MaxRecursionDepth);
-			}
-		}
-	}
+        [Fact]
+        public void Catalog_Can_Create_Array_Of_Cyclic_Object()
+        {
+            Catalog catalog = new Catalog();
+            object instance = catalog.CreateInstance<Sample[]>();
+
+            instance.Should().BeOfType<Sample[]>();
+            Sample[] sample = instance as Sample[];
+
+            foreach (Sample s in sample)
+            {
+                Veirfy(s, 1, catalog.MaxRecursionDepth);
+            }
+        }
+    }
 }

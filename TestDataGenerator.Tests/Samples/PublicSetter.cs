@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 using System.Runtime.Serialization;
 
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class PublicSetter : IAssertEquality
     {
-       
-       
+
+
         public int IntValue { get; set; }
-  
+
         public static PublicSetter CreateInstance()
         {
             return new PublicSetter { IntValue = 10 };
@@ -24,12 +25,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<PublicSetter>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<PublicSetter>();
 
             PublicSetter target = other as PublicSetter;
 
-            Assert.AreEqual(this.IntValue, target.IntValue);
+            target.IntValue.Should().Be(this.IntValue);
         }
     }
 }

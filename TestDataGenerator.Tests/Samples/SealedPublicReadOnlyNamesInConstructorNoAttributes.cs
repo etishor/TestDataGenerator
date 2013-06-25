@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
@@ -22,12 +23,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<SealedPublicReadOnlyNamesInConstructorNoAttributes>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<SealedPublicReadOnlyNamesInConstructorNoAttributes>();
 
             SealedPublicReadOnlyNamesInConstructorNoAttributes target = other as SealedPublicReadOnlyNamesInConstructorNoAttributes;
 
-            Assert.AreEqual(this.IntValue, target.IntValue);            
+            target.IntValue.Should().Be(this.IntValue);
         }
     }
 }

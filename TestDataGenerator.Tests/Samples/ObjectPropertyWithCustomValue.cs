@@ -1,4 +1,5 @@
-﻿using MbUnit.Framework;
+﻿using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
@@ -13,13 +14,14 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<ObjectPropertyWithCustomValue>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<ObjectPropertyWithCustomValue>();
             ObjectPropertyWithCustomValue target = other as ObjectPropertyWithCustomValue;
 
             CustomObject val = target.Value as CustomObject;
-            Assert.IsNotNull(val);
-            Assert.AreEqual((this.Value as CustomObject).Value, val.Value);
+
+            val.Should().NotBeNull();
+            val.Value.Should().Be((this.Value as CustomObject).Value);
         }
     }
 }

@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
 
-using MbUnit.Framework;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class ListProperty : IAssertEquality
     {
-       
-       
-        private List<int> Value { get; set; }
+
+
+        public List<int> Value { get; set; }
 
         public static ListProperty CreateInstance()
         {
@@ -24,11 +20,11 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<ListProperty>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<ListProperty>();
             ListProperty target = other as ListProperty;
 
-            Assert.AreElementsEqual(this.Value, target.Value);
+            target.Value.Should().Equal(this.Value);
         }
     }
 }

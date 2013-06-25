@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class CollectionOfStrings : List<string>, IAssertEquality
     {
         public static CollectionOfStrings CreateInstance()
@@ -20,11 +21,10 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<CollectionOfStrings>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<CollectionOfStrings>();
             CollectionOfStrings target = other as CollectionOfStrings;
-
-            Assert.AreElementsEqual(this, target);
+            target.Should().Equal(this);
         }
     }
 }

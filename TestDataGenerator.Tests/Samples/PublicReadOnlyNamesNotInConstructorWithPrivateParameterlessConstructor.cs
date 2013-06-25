@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 
 namespace TestDataGenerator.Tests.Samples
@@ -25,12 +26,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor>();
 
             PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor target = other as PublicReadOnlyNamesNotInConstructorWithPrivateParameterlessConstructor;
 
-            Assert.AreEqual(this.IntValue, target.IntValue);
+            target.IntValue.Should().Be(this.IntValue);
         }
     }
 }

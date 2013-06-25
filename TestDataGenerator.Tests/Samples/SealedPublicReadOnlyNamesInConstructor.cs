@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 using System.Runtime.Serialization;
 
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public sealed class SealedPublicReadOnlyNamesInConstructor : IAssertEquality
     {
-       
-       
+
+
         public readonly int IntValue;
 
         public SealedPublicReadOnlyNamesInConstructor(int intValue)
@@ -29,12 +30,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<SealedPublicReadOnlyNamesInConstructor>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<SealedPublicReadOnlyNamesInConstructor>();
 
             SealedPublicReadOnlyNamesInConstructor target = other as SealedPublicReadOnlyNamesInConstructor;
 
-            Assert.AreEqual(this.IntValue, target.IntValue);            
+            target.IntValue.Should().Be(this.IntValue);
         }
     }
 }

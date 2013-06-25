@@ -4,31 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
     public class ArrayField : IAssertEquality
     {
-       
-       
         private int[] Value;
 
         public static ArrayField CreateInstance()
         {
-            return new ArrayField { Value = new int[] { 10 , 20 }  };
+            return new ArrayField { Value = new int[] { 10, 20 } };
         }
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<ArrayField>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<ArrayField>();
             ArrayField target = other as ArrayField;
 
-            Assert.AreElementsEqual(this.Value, target.Value);
+            target.Value.Should().Equal(this.Value);
         }
     }
 }

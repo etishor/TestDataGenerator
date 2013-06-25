@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MbUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace TestDataGenerator.Tests
 {
-    [TestFixture]
+
     public class CollectionTests
     {
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Array()
         {
             Catalog catalog = new Catalog();
@@ -16,10 +17,10 @@ namespace TestDataGenerator.Tests
 
             object result = catalog.CreateInstance(array);
 
-            Assert.IsInstanceOfType(array, result);
+            Assert.IsType(array, result);
         }
 
-        [Test]
+        [Fact]
         public void Builder_Can_Create_Array()
         {
             Catalog catalog = new Catalog();
@@ -29,10 +30,10 @@ namespace TestDataGenerator.Tests
 
             object result = builder.CreateInstance(array, null);
 
-            Assert.IsInstanceOfType(array, result);
+            Assert.IsType(array, result);
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Non_Empty_Array()
         {
             Catalog catalog = new Catalog();
@@ -41,24 +42,20 @@ namespace TestDataGenerator.Tests
             for (int i = 0; i < 100; i++) // 100 times since rnd might generate an empty list 
             {
                 object result = catalog.CreateInstance(typeof(string[]));
-                Assert.IsInstanceOfType<string[]>(result);
+                Assert.IsType<string[]>(result);
                 resultedLists.Add(result as string[]);
             }
-            Assert.IsTrue(resultedLists.Any(l => l.Any()));
+            Assert.True(resultedLists.Any(l => l.Any()));
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Generic_Enumerable()
         {
-            Catalog catalog = new Catalog();
-            Type enumerable = typeof(IEnumerable<string>);
-
-            object result = catalog.CreateInstance(enumerable);
-
-            Assert.IsInstanceOfType(enumerable, result);
+            new Catalog().CreateInstance(typeof(IEnumerable<string>))
+                .Should().BeAssignableTo<IEnumerable<string>>();
         }
 
-        [Test]
+        [Fact]
         public void Builder_Can_Create_Generic_Enumerable()
         {
             Catalog catalog = new Catalog();
@@ -68,18 +65,18 @@ namespace TestDataGenerator.Tests
 
             object result = builder.CreateInstance(enumerable, null);
 
-            Assert.IsInstanceOfType(enumerable, result);
+            result.Should().BeAssignableTo<IEnumerable<string>>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_List()
         {
             Catalog catalog = new Catalog();
             object result = catalog.CreateInstance(typeof(List<string>));
-            Assert.IsInstanceOfType<List<string>>(result);
+            Assert.IsType<List<string>>(result);
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Non_Empty_List()
         {
             Catalog catalog = new Catalog();
@@ -88,37 +85,34 @@ namespace TestDataGenerator.Tests
             for (int i = 0; i < 100; i++) // 100 times since rnd might generate an empty list 
             {
                 object result = catalog.CreateInstance(typeof(List<string>));
-                Assert.IsInstanceOfType<List<string>>(result);
+                Assert.IsType<List<string>>(result);
                 resultedLists.Add(result as List<string>);
             }
-            Assert.IsTrue(resultedLists.Any(l => l.Any()));
+            Assert.True(resultedLists.Any(l => l.Any()));
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_IList()
         {
-            Catalog catalog = new Catalog();
-            object result = catalog.CreateInstance(typeof(IList<string>));
-            Assert.IsInstanceOfType<IList<string>>(result);
+            new Catalog().CreateInstance(typeof(IList<string>))
+                .Should().BeAssignableTo<IList<string>>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_ISet()
         {
-            Catalog catalog = new Catalog();
-            object result = catalog.CreateInstance(typeof(ISet<string>));
-            Assert.IsInstanceOfType<ISet<string>>(result);
+            new Catalog().CreateInstance(typeof(ISet<string>))
+                .Should().BeAssignableTo<ISet<string>>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_HashedSet()
         {
-            Catalog catalog = new Catalog();
-            object result = catalog.CreateInstance(typeof(HashSet<string>));
-            Assert.IsInstanceOfType<HashSet<string>>(result);
+            new Catalog().CreateInstance(typeof(HashSet<string>))
+                .Should().BeOfType<HashSet<string>>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Non_Empty_HashedSet()
         {
             Catalog catalog = new Catalog();
@@ -127,22 +121,21 @@ namespace TestDataGenerator.Tests
             for (int i = 0; i < 100; i++) // 100 times since rnd might generate an empty list 
             {
                 object result = catalog.CreateInstance(typeof(HashSet<string>));
-                Assert.IsInstanceOfType<HashSet<string>>(result);
+                Assert.IsType<HashSet<string>>(result);
                 resultedLists.Add(result as HashSet<string>);
             }
-            Assert.IsTrue(resultedLists.Any(l => l.Any()));
+            Assert.True(resultedLists.Any(l => l.Any()));
         }
 
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Dictionary()
         {
-            Catalog catalog = new Catalog();
-            object result = catalog.CreateInstance(typeof(Dictionary<int, string>));
-            Assert.IsInstanceOfType<Dictionary<int, string>>(result);
+            new Catalog().CreateInstance(typeof(Dictionary<int, string>))
+                .Should().BeOfType<Dictionary<int, string>>();
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Non_Empty_Dictionary()
         {
             Catalog catalog = new Catalog();
@@ -151,18 +144,17 @@ namespace TestDataGenerator.Tests
             for (int i = 0; i < 100; i++) // 100 times since rnd might generate an empty dictionary 
             {
                 object result = catalog.CreateInstance(typeof(Dictionary<int, string>));
-                Assert.IsInstanceOfType<Dictionary<int, string>>(result);
+                Assert.IsType<Dictionary<int, string>>(result);
                 resultedLists.Add(result as Dictionary<int, string>);
             }
-            Assert.IsTrue(resultedLists.Any(l => l.Any()));
+            Assert.True(resultedLists.Any(l => l.Any()));
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_IDictionary()
         {
-            Catalog catalog = new Catalog();
-            object result = catalog.CreateInstance(typeof(IDictionary<int, string>));
-            Assert.IsInstanceOfType<IDictionary<int, string>>(result);
+            new Catalog().CreateInstance(typeof(IDictionary<int, string>))
+                .Should().BeAssignableTo<IDictionary<int, string>>();
         }
 
         class TestClass
@@ -170,14 +162,16 @@ namespace TestDataGenerator.Tests
             public IDictionary<string, List<string>> Value { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Object_With_Composed_Collection()
         {
             Catalog catalog = new Catalog();
             object result = catalog.CreateInstance(typeof(TestClass));
-            Assert.IsInstanceOfType<TestClass>(result);
+
+            result.Should().BeOfType<TestClass>();
+
             TestClass instance = result as TestClass;
-            Assert.IsInstanceOfType<IDictionary<string, List<string>>>(instance.Value);
+            instance.Value.Should().NotBeNull();
         }
     }
 }

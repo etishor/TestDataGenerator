@@ -1,10 +1,10 @@
-﻿using System;
-using MbUnit.Framework;
-using TestDataGenerator.Tests.Samples;
+
+using System;
+using Xunit;
 
 namespace TestDataGenerator.Tests
 {
-    [TestFixture]
+
     public class ObjectTests
     {
         class Sample
@@ -34,19 +34,19 @@ namespace TestDataGenerator.Tests
             public DateTime DateProp { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Using_Consutrctor()
         {
             Catalog catalog = new Catalog();
             object instance = catalog.CreateInstance(typeof(Sample));
 
-            Assert.IsInstanceOfType(typeof(Sample), instance);
+            Assert.IsType(typeof(Sample), instance);
             Sample sample = instance as Sample;
 
-            Assert.AreNotEqual(-1, sample.PrivateInt);
-            Assert.IsNotNull(sample.PrivateString);
-            Assert.IsNotNull(sample.StringProp);
-            Assert.AreNotEqual(DateTime.MinValue, sample.DateProp);
+            Assert.NotEqual(-1, sample.PrivateInt);
+            Assert.NotNull(sample.PrivateString);
+            Assert.NotNull(sample.StringProp);
+            Assert.NotEqual(DateTime.MinValue, sample.DateProp);
         }
 
         class TestClass
@@ -59,14 +59,14 @@ namespace TestDataGenerator.Tests
             }
         }
 
-        [Test]
+        [Fact]
         public void Catalog_Can_Create_Object_With_Public_Readonly_Field()
         {
             Catalog catalog = new Catalog();
             object instance = catalog.CreateInstance<TestClass>();
-            Assert.IsInstanceOfType<TestClass>(instance);
+            Assert.IsType<TestClass>(instance);
             TestClass cl = instance as TestClass;
-            Assert.AreNotEqual(-1, cl.Value);
+            Assert.NotEqual(-1, cl.Value);
         }
     }
 }

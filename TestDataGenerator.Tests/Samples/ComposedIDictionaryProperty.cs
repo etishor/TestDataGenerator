@@ -4,18 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class ComposedIDictionaryProperty : IAssertEquality
     {
-       
-       
-        public IDictionary<int,List<string>> Value { get; set; }
+
+
+        public IDictionary<int, List<string>> Value { get; set; }
 
         public static ComposedIDictionaryProperty CreateInstance()
         {
@@ -24,16 +25,16 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<ComposedIDictionaryProperty>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<ComposedIDictionaryProperty>();
             ComposedIDictionaryProperty target = other as ComposedIDictionaryProperty;
-            Assert.IsNotNull(target.Value);
-            Assert.AreEqual(this.Value.Count, target.Value.Count);
+            target.Value.Should().NotBeNull();
+            target.Value.Count.Should().Be(this.Value.Count);
             foreach (var kvp in this.Value)
             {
                 var first = kvp.Value;
                 var second = target.Value[kvp.Key];
-                Assert.AreElementsEqual(first, second);
+                second.Should().Equal(first);
             }
         }
     }

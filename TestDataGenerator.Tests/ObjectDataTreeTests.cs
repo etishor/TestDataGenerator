@@ -1,10 +1,10 @@
-﻿
+﻿using System.Collections.Generic;
+using FluentAssertions;
+using Xunit;
+
 namespace TestDataGenerator.Tests
 {
-    using System.Collections.Generic;
-    using MbUnit.Framework;
 
-    [TestFixture]
     public class ObjectDataTreeTests
     {
         class Sample
@@ -29,7 +29,7 @@ namespace TestDataGenerator.Tests
             public Sample[] Other { get; set; }
         }
 
-        [Test]
+        [Fact]
         void Can_Parse_Simple_Class()
         {
             Catalog catalog = new Catalog();
@@ -41,9 +41,9 @@ namespace TestDataGenerator.Tests
             ObjectDataTree otherDataTree = new ObjectDataTree(instance);
             string otherString = otherDataTree.StringValue();
 
-            Assert.IsNotEmpty(asString);
-            Assert.IsNotEmpty(otherString);
-            Assert.AreEqual(asString, otherString);
+            Assert.NotEmpty(asString);
+            Assert.NotEmpty(otherString);
+            otherString.Should().Be(asString);
         }
     }
 }

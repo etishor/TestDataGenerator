@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using MbUnit.Framework;
+using Xunit;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
-    
-    
-    
+
+
+
     public class EnumerableProperty : IAssertEquality
     {
-       
-       
+
+
         private IEnumerable<int> Value { get; set; }
 
         public static EnumerableProperty CreateInstance()
@@ -24,11 +25,11 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<EnumerableProperty>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<EnumerableProperty>();
             EnumerableProperty target = other as EnumerableProperty;
 
-            Assert.AreElementsEqual(this.Value, target.Value);
+            Assert.Equal(target.Value, this.Value);
         }
     }
 }

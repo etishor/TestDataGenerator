@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using MbUnit.Framework;
+using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
 {
@@ -16,12 +16,12 @@ namespace TestDataGenerator.Tests.Samples
 
         public void AssertEquality(object other)
         {
-            Assert.IsNotNull(other);
-            Assert.IsInstanceOfType<CollectionOfCustomObjects>(other);
+            other.Should().NotBeNull();
+            other.Should().BeOfType<CollectionOfCustomObjects>();
             CollectionOfCustomObjects target = other as CollectionOfCustomObjects;
 
-            Assert.AreEqual(this.Count, target.Count);
-            Assert.AreElementsEqual(this, target, new Gallio.Common.EqualityComparison<CustomObject>((a, b) => a.Value == b.Value));
+            target.Count.Should().Be(this.Count);
+            target.Should().Equal(this);
         }
     }
 }
