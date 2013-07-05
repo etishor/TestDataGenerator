@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace TestDataGenerator
 {
@@ -133,21 +134,47 @@ namespace TestDataGenerator
             Type element = type.GetElementType();
             int len = Rnd.Integer(MinCollectionLimit, CollectionLimit);
 
+            var rank = type.GetArrayRank();
+
             var constructor = type.GetConstructors()
                 .OrderBy(c => c.GetParameters().Count())
                 .FirstOrDefault();
 
+            var args = Enumerable.Range(0, rank).Select(i => (object)len).ToArray();
+
             //var constructor = constructors.Single();
 
-            var array = constructor.Invoke(new object[] { len });
+            var array = constructor.Invoke(args);
 
-            var setter = type.GetMethod("SetValue", new Type[] { typeof(object), typeof(int) });
+            var setterArgs = new Type[] { typeof(object) }
+                .Union(Enumerable.Range(0, rank).Select(i => typeof(int)))
+                .ToArray();
 
+            var setter = type.GetMethod("SetValue", setterArgs);
+
+            int[] indexes = Enumerable.Range(0, rank).Select(i => 0).ToArray();
+
+            CallArraySetter(array, element, len, setter, 0, indexes);
+
+            return array;
+        }
+
+        private void CallArraySetter(object array, Type element, int len, MethodInfo setter, int rank, int[] indexes)
+        {
             for (int i = 0; i < len; i++)
             {
-                setter.Invoke(array, new object[] { this.catalog.CreateInstance(element), i });
+                indexes[rank] = i;
+                if (rank == indexes.Length -1)
+                {
+                    setter.Invoke(array, new object[] { this.catalog.CreateInstance(element) }.Union(indexes.Select(x => (object)x)).ToArray());
+                }
+                else
+                {
+                    CallArraySetter(array, element, len, setter, rank + 1, indexes);
+                }
             }
-            return array;
+
+
         }
     }
 }

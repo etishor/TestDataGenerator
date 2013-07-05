@@ -6,11 +6,11 @@ namespace TestDataGenerator.Tests.Samples
 {
     public class JaggedArray : IAssertEquality
     {
-        public int[,] Value { get; set; }
+        public int[][] Value { get; set; }
 
         public static JaggedArray CreateInstance()
         {
-            return new JaggedArray { Value = new int[2, 2] { { 10, 20 }, { 30, 40 } } };
+            return new JaggedArray { Value = new int[][] { new int[] { 10, 20 }, new int[] { 30, 40 } } };
         }
 
         public void AssertEquality(object other)

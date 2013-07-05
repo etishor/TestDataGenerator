@@ -6,20 +6,12 @@ namespace TestDataGenerator.Tests.Samples
     using Xunit;
     using FluentAssertions;
 
-
-
-
-
     public class UriWithQuotesAndSlashes : IAssertEquality
     {
         public const string UriQuotes = @"http://test.com/%22foo+bar%22";
         public const string UriSlash = @"http://tes/?a=b\\c&d=e\";
 
-
-
         public Uri ValueWithQuotes { get; set; }
-
-
 
         public Uri ValueWithSlashes { get; set; }
 
@@ -38,8 +30,8 @@ namespace TestDataGenerator.Tests.Samples
             other.Should().BeOfType<UriWithQuotesAndSlashes>();
             UriWithQuotesAndSlashes target = other as UriWithQuotesAndSlashes;
 
-            target.ValueWithQuotes.ToString().Should().Be(this.ValueWithQuotes.ToString());
-            target.ValueWithSlashes.ToString().Should().Be(this.ValueWithSlashes.ToString());
+            target.ValueWithQuotes.Should().Be(this.ValueWithQuotes);
+            target.ValueWithSlashes.Should().Be(this.ValueWithSlashes);
         }
     }
 }
