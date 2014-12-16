@@ -86,7 +86,7 @@
 
             if (constructor == null)
             {
-                throw new InvalidOperationException("Unable to find a constructor");
+                throw new InvalidOperationException(string.Format("Unable to find a constructor for type '{0}'", type.FullName));
             }
 
             this.instanceCreator = () => InvokeConstructor(constructor);
