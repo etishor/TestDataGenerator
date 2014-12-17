@@ -30,8 +30,11 @@ namespace TestDataGenerator.Tests
         {
             get
             {
-                yield return new object[] { typeof(MultiDimensionsArray) };
-                //return GetMessages().Select(m => new object[] { m });
+                var skipped = new[] { "MultiDimensionsArray", "ObjectProperty" };
+                //yield return new object[] { typeof(MultiDimensionsArray) };
+                return GetMessages()
+                    .Where(m => !skipped.Contains(m.Name))
+                    .Select(m => new object[] { m });
             }
         }
 

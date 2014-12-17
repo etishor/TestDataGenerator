@@ -1,5 +1,4 @@
 ﻿using System;
-using Xunit;
 using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
@@ -35,7 +34,7 @@ namespace TestDataGenerator.Tests.Samples
             PublicReadonlyFieldWithNamesInConstructorNoAttributes target = other as PublicReadonlyFieldWithNamesInConstructorNoAttributes;
 
             target.Id.Should().Be(this.Id);
-            target.Date.Should().BeCloseTo(this.Date);            
+            target.Date.ToUniversalTime().Should().BeCloseTo(this.Date.ToUniversalTime());
             target.Text.Should().Be(this.Text);
             target.Number.Should().Be(this.Number);
             target.Uri.Should().Be(this.Uri);
