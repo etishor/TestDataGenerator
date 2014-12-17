@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.Serialization;
-
-using Xunit;
+﻿
 using FluentAssertions;
 
 namespace TestDataGenerator.Tests.Samples
@@ -27,6 +21,11 @@ namespace TestDataGenerator.Tests.Samples
             }
 
             return this.Value == other.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Value.GetHashCode();
         }
     }
 
