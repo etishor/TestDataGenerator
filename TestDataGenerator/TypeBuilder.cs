@@ -129,9 +129,12 @@
 
             var instance = instanceCreator();
 
-            SetProperties(instance);
+            if (instance != null)
+            {
+                SetProperties(instance);
 
-            this.postConfiguration.ForEach(a => a(instance));
+                this.postConfiguration.ForEach(a => a(instance));
+            }
 
             return instance;
         }
@@ -151,7 +154,10 @@
             foreach (var prop in props)
             {
                 object val = this.catalog.CreateInstance(prop.PropertyType, prop.Name);
-                prop.SetValue(instance, val, null);
+                if (val != null)
+                {
+                    prop.SetValue(instance, val, null);
+                }
             }
         }
 
