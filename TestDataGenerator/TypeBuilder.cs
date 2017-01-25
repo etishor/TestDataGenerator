@@ -129,9 +129,12 @@
 
             var instance = instanceCreator();
 
-            SetProperties(instance);
+            if (instance != null)
+            {
+                SetProperties(instance);
 
-            this.postConfiguration.ForEach(a => a(instance));
+                this.postConfiguration.ForEach(a => a(instance));
+            }
 
             return instance;
         }
