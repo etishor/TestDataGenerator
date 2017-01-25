@@ -154,7 +154,10 @@
             foreach (var prop in props)
             {
                 object val = this.catalog.CreateInstance(prop.PropertyType, prop.Name);
-                prop.SetValue(instance, val, null);
+                if (val != null)
+                {
+                    prop.SetValue(instance, val, null);
+                }
             }
         }
 
