@@ -120,8 +120,11 @@ namespace TestDataGenerator
                 }
 
                 object instance = builder.CreateInstance(type, name);
-
-                postCreationHandlers.ForEach(h => h.ApplyPostCreationRule(instance));
+                
+                if (instance != null)
+                {
+                    postCreationHandlers.ForEach(h => h.ApplyPostCreationRule(instance));
+                }
 
                 return instance;
             }
